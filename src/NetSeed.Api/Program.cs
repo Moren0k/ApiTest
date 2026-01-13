@@ -14,16 +14,11 @@ if (builder.Environment.IsDevelopment())
     Env.Load("../../.env"); // LOAD .env ONLY IN DEVELOPMENT
 }
 
-var dbHost = Environment.GetEnvironmentVariable("DB_HOST")
-             ?? throw new InvalidOperationException("DB_HOST not set");
-var dbPort = Environment.GetEnvironmentVariable("DB_PORT")
-             ?? throw new InvalidOperationException("DB_PORT not set");
-var dbName = Environment.GetEnvironmentVariable("DB_NAME")
-             ?? throw new InvalidOperationException("DB_NAME not set");
-var dbUser = Environment.GetEnvironmentVariable("DB_USER")
-             ?? throw new InvalidOperationException("DB_USER not set");
-var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD")
-                 ?? throw new InvalidOperationException("DB_PASSWORD not set");
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 var connectionString =
     $"Server={dbHost};Port={dbPort};Database={dbName};User={dbUser};Password={dbPassword};";
 
