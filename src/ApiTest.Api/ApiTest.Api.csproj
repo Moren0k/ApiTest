@@ -18,10 +18,4 @@
     <ProjectReference Include="..\ApiTest.Infrastructure\ApiTest.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="..\..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
-  </ItemGroup>
-
 </Project>
