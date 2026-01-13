@@ -1,28 +1,19 @@
-# NetSeed
+# ApiTest
 
 ---
 
 ## Descripción del Proyecto
 
-NetSeed es una plantilla base (**Seed**) profesional para el desarrollo de APIs RESTful en **.NET 8**.
-
-Este proyecto no es un tutorial ni una demostración de características. Es una infraestructura agnóstica de alto nivel, diseñada siguiendo estrictamente los principios de **Clean Architecture** y **Domain-Driven Design (DDD)**. Su propósito es servir como punto de partida production-grade para equipos que requieren una arquitectura sólida sin deuda técnica inicial ni lógica de negocio preexistente que deba ser eliminada.
-
-## Filosofía de Diseño
-
-Este seed es opinionated en su arquitectura, pero neutral en su negocio.
-
-- **Sin lógica "Dummy":** No encontrará controladores ni entidades de ejemplo. El dominio está intencionalmente vacío.
-- **Sin Autenticación forzada:** No se incluye JWT ni integración con Identity, permitiendo que el arquitecto decida el proveedor de seguridad más adecuado.
+lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 ## Arquitectura
 
 La solución implementa una separación estricta de responsabilidades en cuatro capas concéntricas:
 
-1. **NetSeed.Domain:** Núcleo del negocio. Contiene Entidades, Value Objects y Reglas de Negocio. No posee dependencias externas.
-2. **NetSeed.Application:** Casos de Uso, interfaces de repositorios y orquestación. Depende exclusivamente de Domain.
-3. **NetSeed.Infrastructure:** Implementación de detalles técnicos (Persistencia EF Core, Cliente MySQL, adaptadores externos).
-4. **NetSeed.Api:** Capa de presentación y entrada. Configura el contenedor de inyección de dependencias y expone los endpoints HTTP.
+1. **ApiTest.Domain:** Núcleo del negocio. Contiene Entidades, Value Objects y Reglas de Negocio. No posee dependencias externas.
+2. **ApiTest.Application:** Casos de Uso, interfaces de repositorios y orquestación. Depende exclusivamente de Domain.
+3. **ApiTest.Infrastructure:** Implementación de detalles técnicos (Persistencia EF Core, Cliente MySQL, adaptadores externos).
+4. **ApiTest.Api:** Capa de presentación y entrada. Configura el contenedor de inyección de dependencias y expone los endpoints HTTP.
 
 ## Requisitos Previos
 
@@ -41,7 +32,7 @@ En el entorno de desarrollo, se utiliza un archivo `.env` en la raíz de la solu
 ```env
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=netseed_db
+DB_NAME=ApiTest_db
 DB_USER=root
 DB_PASSWORD=secret_password
 ```
@@ -56,8 +47,8 @@ En este escenario, la aplicación se ejecuta dentro de un contenedor Docker, per
 El `Dockerfile` provisto es "Production-Ready". Utiliza multi-stage builds para generar una imagen ligera y segura (non-root).
 
 ```bash
-docker build -t netseed-api .
-docker run -p 8080:8080 -e DB_HOST=mi-servidor-db -e DB_PASSWORD=xxx netseed-api
+docker build -t apitest-api .
+docker run -p 8080:8080 -e DB_HOST=mi-servidor-db -e DB_PASSWORD=xxx ApiTest-api
 ```
 
 ### Escenario B: Desarrollo Local (Sin Docker)
@@ -70,7 +61,7 @@ Para el desarrollo diario ("Code & Run"), se recomienda ejecutar la aplicación 
 
 ```bash
 dotnet restore
-dotnet run --project src/NetSeed.Api
+dotnet run --project src/ApiTest.Api
 ```
 
 ### Escenario C: Entorno Local con Docker Compose (Opcional)

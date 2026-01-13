@@ -6,10 +6,10 @@ WORKDIR /src
 
 # Copiamos solución y proyectos
 COPY *.sln .
-COPY src/NetSeed.Api/NetSeed.Api.csproj src/NetSeed.Api/
-COPY src/NetSeed.Application/NetSeed.Application.csproj src/NetSeed.Application/
-COPY src/NetSeed.Domain/NetSeed.Domain.csproj src/NetSeed.Domain/
-COPY src/NetSeed.Infrastructure/NetSeed.Infrastructure.csproj src/NetSeed.Infrastructure/
+COPY src/ApiTest.Api/ApiTest.Api.csproj src/ApiTest.Api/
+COPY src/ApiTest.Application/ApiTest.Application.csproj src/ApiTest.Application/
+COPY src/ApiTest.Domain/ApiTest.Domain.csproj src/ApiTest.Domain/
+COPY src/ApiTest.Infrastructure/ApiTest.Infrastructure.csproj src/ApiTest.Infrastructure/
 
 # Restore
 RUN dotnet restore
@@ -18,7 +18,7 @@ RUN dotnet restore
 COPY src/ src/
 
 # Build
-RUN dotnet publish src/NetSeed.Api/NetSeed.Api.csproj \
+RUN dotnet publish src/ApiTest.Api/ApiTest.Api.csproj \
     -c Release \
     -o /app/publish
 
@@ -32,4 +32,4 @@ COPY --from=build /app/publish .
 
 EXPOSE 8080
 
-ENTRYPOINT ["dotnet", "NetSeed.Api.dll"]
+ENTRYPOINT ["dotnet", "ApiTest.Api.dll"]

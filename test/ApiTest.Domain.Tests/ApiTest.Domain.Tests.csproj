@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NetSeed.Api\NetSeed.Api.csproj" />
+    <ProjectReference Include="..\..\src\ApiTest.Domain\ApiTest.Domain.csproj" />
   </ItemGroup>
 
 </Project>

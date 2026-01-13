@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\NetSeed.Application\NetSeed.Application.csproj" />
+    <ProjectReference Include="..\ApiTest.Application\ApiTest.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

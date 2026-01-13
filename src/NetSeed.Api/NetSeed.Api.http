@@ -1,6 +1,0 @@
-@NetSeed.Api_HostAddress = http://localhost:5187
-
-GET {{NetSeed.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

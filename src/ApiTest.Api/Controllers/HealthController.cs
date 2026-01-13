@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using NetSeed.Infrastructure.Persistence.Health;
+using ApiTest.Infrastructure.Persistence.Health;
 
-namespace NetSeed.Api.Controllers;
+namespace ApiTest.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]

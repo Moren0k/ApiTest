@@ -1,7 +1,7 @@
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
-using NetSeed.Infrastructure.Persistence;
-using NetSeed.Infrastructure.Persistence.Health;
+using ApiTest.Infrastructure.Persistence;
+using ApiTest.Infrastructure.Persistence.Health;
 
 var builder = WebApplication.CreateBuilder(args);
 

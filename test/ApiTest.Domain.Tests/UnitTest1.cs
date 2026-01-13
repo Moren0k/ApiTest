@@ -1,4 +1,4 @@
-namespace NetSeed.Domain.Tests;
+namespace ApiTest.Domain.Tests;
 
 public class UnitTest1
 {

@@ -5,19 +5,19 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{952950CF-A9D9-4588-B28B-A001332232C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSeed.Domain", "src\NetSeed.Domain\NetSeed.Domain.csproj", "{536D8FC5-A44E-4CC1-89D7-8F439BAC773D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest.Domain", "src\ApiTest.Domain\ApiTest.Domain.csproj", "{536D8FC5-A44E-4CC1-89D7-8F439BAC773D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSeed.Application", "src\NetSeed.Application\NetSeed.Application.csproj", "{4EB10FDA-B0FE-4F3C-9FD0-35DC53C5C57F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest.Application", "src\ApiTest.Application\ApiTest.Application.csproj", "{4EB10FDA-B0FE-4F3C-9FD0-35DC53C5C57F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSeed.Infrastructure", "src\NetSeed.Infrastructure\NetSeed.Infrastructure.csproj", "{2E4CB8DA-5C80-49E1-BEA2-63E57EBBBA57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest.Infrastructure", "src\ApiTest.Infrastructure\ApiTest.Infrastructure.csproj", "{2E4CB8DA-5C80-49E1-BEA2-63E57EBBBA57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSeed.Api", "src\NetSeed.Api\NetSeed.Api.csproj", "{9533DE4B-A288-4568-87BB-9E3A34BAAEDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest.Api", "src\ApiTest.Api\ApiTest.Api.csproj", "{9533DE4B-A288-4568-87BB-9E3A34BAAEDA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7ED8876A-C6C4-4AA3-B2FC-BDC95BE8A16B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSeed.Domain.Tests", "test\NetSeed.Domain.Tests\NetSeed.Domain.Tests.csproj", "{21575913-C2D7-4F63-8141-5E6A30E075CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest.Domain.Tests", "test\ApiTest.Domain.Tests\ApiTest.Domain.Tests.csproj", "{21575913-C2D7-4F63-8141-5E6A30E075CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSeed.Api.Tests", "test\NetSeed.Api.Tests\NetSeed.Api.Tests.csproj", "{501101D7-5D64-41A5-B86F-D3750C8A5C70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest.Api.Tests", "test\ApiTest.Api.Tests\ApiTest.Api.Tests.csproj", "{501101D7-5D64-41A5-B86F-D3750C8A5C70}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5F7F5466-2D9E-4411-AD37-3E8A38CF6441}"
 	ProjectSection(SolutionItems) = preProject

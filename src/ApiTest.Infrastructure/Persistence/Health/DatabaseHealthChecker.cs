@@ -1,4 +1,4 @@
-namespace NetSeed.Infrastructure.Persistence.Health;
+namespace ApiTest.Infrastructure.Persistence.Health;
 
 public class DatabaseHealthChecker
 {

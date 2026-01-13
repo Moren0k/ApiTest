@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace NetSeed.Infrastructure.Persistence;
+namespace ApiTest.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext
 {
