@@ -1,8 +1,13 @@
 using System.Text;
+using ApiTest.Application.IServices;
+using ApiTest.Application.Services;
+using ApiTest.Domain.IRepository;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ApiTest.Infrastructure.Persistence;
 using ApiTest.Infrastructure.Persistence.Health;
+using ApiTest.Infrastructure.Repositories;
+using ApiTest.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -34,10 +39,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // DEPENDENCY INJECTION: SERVICES
 // =============================================================
 builder.Services.AddScoped<DatabaseHealthChecker>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // =============================================================
 // DEPENDENCY INJECTION: REPOSITORIES
 // =============================================================
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // =============================================================
 // CONTROLLERS
@@ -75,6 +83,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
+// =============================================================
+// CORS
+// =============================================================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 // =============================================================
 // BUILD APP
@@ -118,7 +141,10 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
