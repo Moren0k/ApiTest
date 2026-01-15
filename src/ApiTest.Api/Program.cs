@@ -1,7 +1,9 @@
 using System.Text;
 using ApiTest.Application.IServices;
+using ApiTest.Application.SecurityJwt;
 using ApiTest.Application.Services;
 using ApiTest.Domain.IRepository;
+using ApiTest.Domain.ISecurity;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ApiTest.Infrastructure.Persistence;
@@ -9,6 +11,7 @@ using ApiTest.Infrastructure.Persistence.Health;
 using ApiTest.Infrastructure.Repositories;
 using ApiTest.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +43,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // =============================================================
 builder.Services.AddScoped<DatabaseHealthChecker>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+// ===========
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // =============================================================
 // DEPENDENCY INJECTION: REPOSITORIES

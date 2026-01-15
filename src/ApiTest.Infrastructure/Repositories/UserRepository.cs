@@ -14,47 +14,43 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<User>> GetAllUsersAsync()
-    {
-        return await _dbContext.Users.ToListAsync();
-    }
-
-    public async Task AddUserAsync(User user)
+    // CRUD
+    public async Task AddAsync(User user)
     {
         _dbContext.Users.Add(user);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateUserAsync(User user)
+    public async Task UpdateAsync(User user)
     {
         _dbContext.Users.Update(user);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteUserAsync(User user)
+    public async Task RemoveAsync(User user)
     {
         _dbContext.Users.Remove(user);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<User> GetUserByIdAsync(Guid id)
+    // SEARCH
+    public async Task<IEnumerable<User>> GetAllAsync()
     {
-        User user = await _dbContext.Users.FindAsync(id)
-                    ?? throw new InvalidOperationException();
-        return user;
+        return await _dbContext.Users.ToListAsync();
+    }
+    
+    public async Task<User?> GetByIdAsync(Guid id)
+    {
+        return await _dbContext.Users.FindAsync(id);
     }
 
-    public async Task<User> GetUserByEmailAsync(string email)
+    public async Task<User?> GetByEmailAsync(string email)
     {
-        User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email)
-                    ?? throw new InvalidOperationException();
-        return user;
+        return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public async Task<User> GetUserByUsernameAsync(string name)
+    public async Task<User?> GetByNameAsync(string name)
     {
-        User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == name)
-                    ?? throw new InvalidOperationException();
-        return user;
+        return await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == name);
     }
 }

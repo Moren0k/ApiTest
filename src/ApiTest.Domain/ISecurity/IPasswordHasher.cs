@@ -1,4 +1,4 @@
-namespace ApiTest.Application.IServices;
+namespace ApiTest.Domain.ISecurity;
 
 public interface IPasswordHasher
 {

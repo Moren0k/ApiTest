@@ -5,13 +5,13 @@ namespace ApiTest.Domain.IRepository;
 public interface IUserRepository
 {
     // CRUD
-    public Task<IEnumerable<User>> GetAllUsersAsync();
-    public Task AddUserAsync(User user);
-    public Task UpdateUserAsync(User user);
-    public Task DeleteUserAsync(User user);
+    public Task AddAsync(User user);
+    public Task UpdateAsync(User user);
+    public Task RemoveAsync(User user);
     
     // SEARCH
-    public Task<User> GetUserByIdAsync(Guid id);
-    public Task<User> GetUserByEmailAsync(string email);
-    public Task<User> GetUserByUsernameAsync(string name);
+    public Task<IEnumerable<User>> GetAllAsync();
+    public Task<User?> GetByIdAsync(Guid id);
+    public Task<User?> GetByEmailAsync(string email);
+    public Task<User?> GetByNameAsync(string name);
 }

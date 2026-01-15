@@ -1,10 +1,12 @@
 using ApiTest.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTest.Api.Controllers;
 
 [ApiController]
 [Route("api/users")]
+[Authorize] // requiere JWT
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -14,51 +16,40 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-    {
-        var user = await _userService.RegisterAsync(
-            request.Name,
-            request.Email,
-            request.Password
-        );
-
-        return Ok(user);
-    }
-
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
-    {
-        var user = await _userService.LoginAsync(
-            request.Email,
-            request.Password
-        );
-
-        return Ok(user);
-    }
-
+    // ========================
+    // GET ALL (Admin)
+    // ========================
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
-        var users = await _userService.GetAllAsync();
+        var users = await _userService.GetAllUsersAsync();
         return Ok(users);
     }
 
+    // ========================
+    // GET BY ID (Admin)
+    // ========================
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var user = await _userService.GetByIdAsync(id);
+        var user = await _userService.GetUserByIdAsync(id);
+
+        if (user == null)
+            return NotFound();
+
         return Ok(user);
     }
+
+    // ========================
+    // DELETE (Admin)
+    // ========================
+    [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _userService.DeleteUserAsync(id);
+        return NoContent();
+    }
 }
-
-public record RegisterRequest(
-    string Name,
-    string Email,
-    string Password
-);
-
-public record LoginRequest(
-    string Email,
-    string Password
-);

@@ -1,6 +1,5 @@
 using ApiTest.Application.IServices;
 using ApiTest.Domain.Entities;
-using ApiTest.Domain.Enums;
 using ApiTest.Domain.IRepository;
 
 namespace ApiTest.Application.Services;
@@ -8,49 +7,52 @@ namespace ApiTest.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IPasswordHasher _passwordHasher;
 
-    public UserService(
-        IUserRepository userRepository,
-        IPasswordHasher passwordHasher)
+    public UserService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _passwordHasher = passwordHasher;
     }
 
-    public async Task<User> RegisterAsync(string name, string email, string password)
+    public async Task UpdateUserAsync(Guid id)
     {
-        var passwordHash = _passwordHasher.Hash(password);
+        var user = await _userRepository.GetByIdAsync(id);
+        if (user == null)
+            throw new InvalidOperationException("User not found");
 
-        var newUser = new User(
-            name: name,
-            email: email,
-            passwordHash: passwordHash,
-            role: UserRole.User
-        );
+        // Por ahora no hay cambios de dominio definidos
+        // Ejemplo futuro:
+        // user.UpdateName(...)
+        // user.PromoteToAdmin()
 
-        await _userRepository.AddUserAsync(newUser);
-        return newUser;
+        await _userRepository.UpdateAsync(user);
     }
 
-    public async Task<User> LoginAsync(string email, string password)
+    public async Task DeleteUserAsync(Guid id)
     {
-        var user = await _userRepository.GetUserByEmailAsync(email);
+        var user = await _userRepository.GetByIdAsync(id);
+        if (user == null)
+            throw new InvalidOperationException("User not found");
 
-        var isValid = _passwordHasher.Verify(password, user.PasswordHash);
-        if (!isValid)
-            throw new InvalidOperationException("Invalid credentials");
-
-        return user;
+        await _userRepository.RemoveAsync(user);
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        return await _userRepository.GetAllUsersAsync();
+        return await _userRepository.GetAllAsync();
     }
 
-    public async Task<User> GetByIdAsync(Guid id)
+    public async Task<User?> GetUserByIdAsync(Guid id)
     {
-        return await _userRepository.GetUserByIdAsync(id);
+        return await _userRepository.GetByIdAsync(id);
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        return await _userRepository.GetByEmailAsync(email);
+    }
+
+    public async Task<User?> GetUserByNameAsync(string name)
+    {
+        return await _userRepository.GetByNameAsync(name);
     }
 }

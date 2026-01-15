@@ -1,9 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ApiTest.Application.DTOs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ApiTest.Api.Security;
+namespace ApiTest.Application.SecurityJwt;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
@@ -14,7 +16,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         _configuration = configuration;
     }
     
-    public string Generate(Guid id)
+    public string Generate(UserDto user)
     {
         var jwtSection = _configuration.GetSection("Jwt");
         
@@ -30,10 +32,11 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         
-        var claims = new[]
+        var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Role),
+            new Claim(JwtRegisteredClaimNames.Name, user.Name)
         };
         
         var token = new JwtSecurityToken(
