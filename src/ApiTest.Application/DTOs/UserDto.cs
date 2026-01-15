@@ -1,3 +1,5 @@
+using ApiTest.Domain.Enums;
+
 namespace ApiTest.Application.DTOs;
 
 public record UserDto(
@@ -5,4 +7,8 @@ public record UserDto(
     string Name,
     string Email,
     string Role
+);
+
+public record ChangeUserRoleRequest(
+    UserRole Role
 );

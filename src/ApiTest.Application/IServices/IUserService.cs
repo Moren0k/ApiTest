@@ -1,4 +1,6 @@
+using ApiTest.Application.DTOs;
 using ApiTest.Domain.Entities;
+using ApiTest.Domain.Enums;
 
 namespace ApiTest.Application.IServices;
 
@@ -9,8 +11,10 @@ public interface IUserService
     public Task DeleteUserAsync(Guid id);
     
     // SEARCH
-    public Task<IEnumerable<User>> GetAllUsersAsync();
-    public Task<User?> GetUserByIdAsync(Guid id);
-    public Task<User?> GetUserByEmailAsync(string email);
-    public Task<User?> GetUserByNameAsync(string name);
+    public Task<IEnumerable<UserDto>> GetAllUsersAsync();
+    public Task<UserDto?> GetUserByIdAsync(Guid id);
+    public Task<UserDto?> GetUserByEmailAsync(string email);
+    public Task<UserDto?> GetUserByNameAsync(string name);
+    
+    public Task<UserDto> ChangeUserRoleAsync(Guid userId, UserRole role);
 }

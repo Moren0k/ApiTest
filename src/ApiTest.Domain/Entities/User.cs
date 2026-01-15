@@ -51,7 +51,7 @@ public class User : BaseEntity
         PasswordHash = passwordHash;
     }
     
-    public void PromoteToAdmin()
+    public void SetToAdmin()
     {
         if (Role == UserRole.Admin)
             return;
@@ -59,7 +59,7 @@ public class User : BaseEntity
         Role = UserRole.Admin;
     }
     
-    public void DemoteToUser()
+    public void SetToUser()
     {
         if (Role == UserRole.User)
             return;

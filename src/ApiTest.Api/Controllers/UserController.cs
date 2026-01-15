@@ -1,3 +1,4 @@
+using ApiTest.Application.DTOs;
 using ApiTest.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ namespace ApiTest.Api.Controllers;
 
 [ApiController]
 [Route("api/users")]
-[Authorize] // requiere JWT
+[Authorize] // require JWT
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -50,6 +51,17 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         await _userService.DeleteUserAsync(id);
+        return NoContent();
+    }
+    
+    // ========================
+    // SET ROLE (Admin)
+    // ========================
+    [HttpPatch("{id:guid}/role")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> SetRole(Guid id, [FromBody]ChangeUserRoleRequest request)
+    {
+        await _userService.ChangeUserRoleAsync(id, request.Role);
         return NoContent();
     }
 }

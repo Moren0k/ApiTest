@@ -1,5 +1,7 @@
+using ApiTest.Application.DTOs;
 using ApiTest.Application.IServices;
 using ApiTest.Domain.Entities;
+using ApiTest.Domain.Enums;
 using ApiTest.Domain.IRepository;
 
 namespace ApiTest.Application.Services;
@@ -36,24 +38,63 @@ public class UserService : IUserService
         await _userRepository.RemoveAsync(user);
     }
 
-    public async Task<IEnumerable<User>> GetAllUsersAsync()
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
-        return await _userRepository.GetAllAsync();
+        var users = await _userRepository.GetAllAsync();
+        
+        return users.Select(user => new UserDto(user.Id, user.Name, user.Email, user.Role.ToString()));
     }
 
     // SEARCH
-    public async Task<User?> GetUserByIdAsync(Guid id)
+    public async Task<UserDto?> GetUserByIdAsync(Guid id)
     {
-        return await _userRepository.GetByIdAsync(id);
+        var user = await _userRepository.GetByIdAsync(id);
+
+        return new UserDto(user!.Id, user.Name, user.Email, user.Role.ToString());
     }
 
-    public async Task<User?> GetUserByEmailAsync(string email)
+    public async Task<UserDto?> GetUserByEmailAsync(string email)
     {
-        return await _userRepository.GetByEmailAsync(email);
+        var user = await _userRepository.GetByEmailAsync(email);
+
+        return new UserDto(user!.Id, user.Name, user.Email, user.Role.ToString());
     }
 
-    public async Task<User?> GetUserByNameAsync(string name)
+    public async Task<UserDto?> GetUserByNameAsync(string name)
     {
-        return await _userRepository.GetByNameAsync(name);
+        var user = await _userRepository.GetByNameAsync(name);
+        
+        return new UserDto(user!.Id, user.Name, user.Email, user.Role.ToString());
+    }
+
+    public async Task<UserDto> ChangeUserRoleAsync(Guid userId, UserRole role)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+            throw new InvalidOperationException("User not found");
+        
+        if (user.Role == role)
+            throw new InvalidOperationException("Role already assigned");
+        
+        switch (role)
+        {
+            case UserRole.Admin:
+                user.SetToAdmin();
+                break;
+            case UserRole.User:
+                user.SetToUser();
+                break;
+            default:
+                throw new InvalidOperationException("Role is not supported");
+        }
+        
+        await _userRepository.UpdateAsync(user);
+        
+        return new UserDto(
+            userId,
+            user.Name,
+            user.Email,
+            (user.Role).ToString()
+        );
     }
 }
