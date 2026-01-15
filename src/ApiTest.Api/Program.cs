@@ -81,7 +81,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = jwt["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(secretKey!)
-            )
+            ),
+            ClockSkew = TimeSpan.Zero
         };
     });
 
