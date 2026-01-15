@@ -1,9 +1,8 @@
 using ApiTest.Application.DTOs;
+using ApiTest.Application.ISecurity;
 using ApiTest.Application.IServices;
-using ApiTest.Application.SecurityJwt;
 using ApiTest.Domain.Entities;
 using ApiTest.Domain.IRepository;
-using ApiTest.Domain.ISecurity;
 
 namespace ApiTest.Application.Services;
 

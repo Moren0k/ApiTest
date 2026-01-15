@@ -41,6 +41,7 @@ public class UserService : IUserService
         return await _userRepository.GetAllAsync();
     }
 
+    // SEARCH
     public async Task<User?> GetUserByIdAsync(Guid id)
     {
         return await _userRepository.GetByIdAsync(id);

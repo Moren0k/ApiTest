@@ -1,6 +1,6 @@
 using ApiTest.Application.DTOs;
 
-namespace ApiTest.Application.SecurityJwt;
+namespace ApiTest.Application.ISecurity;
 
 public interface IJwtTokenGenerator
 {

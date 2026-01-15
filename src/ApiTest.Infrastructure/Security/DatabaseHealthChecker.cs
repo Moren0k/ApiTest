@@ -1,4 +1,6 @@
-namespace ApiTest.Infrastructure.Persistence.Health;
+using ApiTest.Infrastructure.Persistence;
+
+namespace ApiTest.Infrastructure.Security;
 
 public class DatabaseHealthChecker
 {

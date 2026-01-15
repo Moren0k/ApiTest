@@ -1,5 +1,5 @@
+using ApiTest.Infrastructure.Security;
 using Microsoft.AspNetCore.Mvc;
-using ApiTest.Infrastructure.Persistence.Health;
 
 namespace ApiTest.Api.Controllers;
 

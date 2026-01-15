@@ -2,10 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ApiTest.Application.DTOs;
+using ApiTest.Application.ISecurity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ApiTest.Application.SecurityJwt;
+namespace ApiTest.Infrastructure.Security;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {

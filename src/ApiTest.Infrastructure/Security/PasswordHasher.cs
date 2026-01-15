@@ -1,4 +1,4 @@
-using ApiTest.Domain.ISecurity;
+using ApiTest.Application.ISecurity;
 
 namespace ApiTest.Infrastructure.Security;
 
