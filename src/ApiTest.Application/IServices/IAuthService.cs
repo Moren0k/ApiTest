@@ -4,6 +4,6 @@ namespace ApiTest.Application.IServices;
 
 public interface IAuthService
 {
-    Task<AuthResponseDto?> LoginAsync(LoginRequestDto loginRequest);
-    Task<AuthResponseDto?> RegisterAsync(RegisterRequestDto registerRequest);
+    public Task<AuthResponseDto?> LoginAsync(LoginRequestDto loginRequest);
+    public Task<AuthResponseDto?> RegisterAsync(RegisterRequestDto registerRequest);
 }

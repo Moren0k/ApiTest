@@ -69,3 +69,45 @@ dotnet run --project src/ApiTest.Api
 El archivo `compose.yaml` se incluye como una utilidad para levantar la API rápidamente en un entorno aislado.
 
 > **Nota:** En la versión actual (v1.0), el archivo `compose.yaml` levanta únicamente la API y espera que la base de datos se provea externamente.
+
+---
+
+### Generar la Migración
+
+Desde la **raíz de la solución**, ejecutar:
+
+```bash
+dotnet ef migrations add NombreDescriptivoDeLaMigracion \
+  --project src/ApiTest.Infrastructure \
+  --startup-project src/ApiTest.Api
+```
+
+### Aplicar Migraciones a la Base de Datos
+
+Para aplicar las migraciones pendientes:
+
+```bash
+dotnet ef database update \
+  --project src/ApiTest.Infrastructure \
+  --startup-project src/ApiTest.Api
+```
+
+### Comando de Conexión
+
+Utilizando las variables de entorno proporcionadas, el comando de conexión es el siguiente:
+
+```bash
+mysql \
+  -h netseed-morenok.i.aivencloud.com \
+  -P 14463 \
+  -u avnadmin \
+  -p defaultdb
+```
+
+Al ejecutar el comando, el cliente solicitará la contraseña:
+
+```bash
+Enter password:
+```
+
+Ingrese el valor correspondiente a DB_PASSWORD.

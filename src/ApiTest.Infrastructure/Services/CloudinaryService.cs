@@ -5,11 +5,11 @@ using Microsoft.Extensions.Options;
 
 namespace ApiTest.Infrastructure.Services;
 
-public class CloudinaryStorage : IStorageImage
+public class CloudinaryService : ICloudinaryService
 {
     private readonly Cloudinary _cloudinary;
 
-    public CloudinaryStorage(IOptions<CloudinarySettings> options)
+    public CloudinaryService(IOptions<CloudinarySettings> options)
     {
         var settings = options.Value;
 

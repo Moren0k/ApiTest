@@ -38,22 +38,22 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 // =============================================================
+// DEPENDENCY INJECTION: REPOSITORIES
+// =============================================================
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+
+// =============================================================
 // DEPENDENCY INJECTION: SERVICES
 // =============================================================
 builder.Services.AddScoped<DatabaseHealthChecker>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-builder.Services.AddScoped<IStorageImage, CloudinaryStorage>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
-
-// =============================================================
-// DEPENDENCY INJECTION: REPOSITORIES
-// =============================================================
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageServices, ImageServices>();
 
 // =============================================================
 // CONTROLLERS

@@ -8,11 +8,11 @@ namespace ApiTest.Api.Controllers;
 [Route("api/images")]
 public sealed class ImageController : ControllerBase
 {
-    private readonly IStorageImage _imageStorage;
+    private readonly IImageServices _imageServices;
 
-    public ImageController(IStorageImage imageStorage)
+    public ImageController(IImageServices imageServices)
     {
-        _imageStorage = imageStorage;
+        _imageServices = imageServices;
     }
 
     [HttpPost("upload")]
@@ -29,13 +29,12 @@ public sealed class ImageController : ControllerBase
             return BadRequest("Formato no permitido");
 
         await using var stream = file.OpenReadStream();
-
-        var result = await _imageStorage.UploadAsync(stream, file.FileName);
-
-        return Ok(new
-        {
-            publicId = result.PublicId,
-            url = result.SecureUrl.AbsoluteUri
+        
+        var response = await _imageServices.UploadImageAsync(stream, file.FileName);
+        
+        return Ok(new {
+            response.PublicId,
+            response.Url
         });
     }
 }
