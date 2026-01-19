@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CloudinaryDotNet">
+      <HintPath>..\..\..\..\.nuget\packages\cloudinarydotnet\1.27.9\lib\netstandard2.0\CloudinaryDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Tokens">
       <HintPath>..\..\..\..\.nuget\packages\microsoft.identitymodel.tokens\7.0.3\lib\net8.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>

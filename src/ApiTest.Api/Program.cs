@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ApiTest.Infrastructure.Persistence;
 using ApiTest.Infrastructure.Repositories;
 using ApiTest.Infrastructure.Security;
+using ApiTest.Infrastructure.Services;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -41,6 +43,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<DatabaseHealthChecker>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddScoped<IStorageImage, CloudinaryStorage>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -134,6 +137,12 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
+
+// =============================================================
+// CLOUDINARY
+// =============================================================
+builder.Services.Configure<CloudinarySettings>(
+    builder.Configuration.GetSection("Cloudinary"));
 
 // =============================================================
 // BUILD APP
