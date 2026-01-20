@@ -146,6 +146,18 @@ builder.Services.AddCors(options =>
 builder.Services.Configure<CloudinarySettings>(
     builder.Configuration.GetSection("Cloudinary"));
 
+builder.Services.PostConfigure<CloudinarySettings>(settings =>
+{
+    if (string.IsNullOrWhiteSpace(settings.CloudName))
+        throw new InvalidOperationException("Cloudinary CloudName not configured");
+
+    if (string.IsNullOrWhiteSpace(settings.ApiKey))
+        throw new InvalidOperationException("Cloudinary ApiKey not configured");
+
+    if (string.IsNullOrWhiteSpace(settings.ApiSecret))
+        throw new InvalidOperationException("Cloudinary ApiSecret not configured");
+});
+
 // =============================================================
 // BUILD APP
 // =============================================================
