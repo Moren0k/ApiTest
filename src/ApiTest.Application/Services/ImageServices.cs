@@ -27,7 +27,7 @@ public class ImageServices : IImageServices
         return new ImageUploadResponse
         {
             PublicId = result.PublicId,
-            Url = result.SecureUrl.AbsoluteUri
+            Url = result.Url
         };
     }
 

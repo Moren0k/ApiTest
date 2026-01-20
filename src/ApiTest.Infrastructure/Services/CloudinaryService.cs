@@ -1,3 +1,4 @@
+using ApiTest.Application.DTOs;
 using ApiTest.Application.IServices;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
@@ -18,7 +19,7 @@ public class CloudinaryService : ICloudinaryService
         _cloudinary = new Cloudinary(account);
     }
 
-    public async Task<ImageUploadResult> UploadAsync(Stream file, string fileName)
+    public async Task<ImageUploadResponse> UploadAsync(Stream file, string fileName)
     {
         var uploadParams = new ImageUploadParams
         {
@@ -29,7 +30,16 @@ public class CloudinaryService : ICloudinaryService
             Overwrite = false
         };
 
-        return await _cloudinary.UploadAsync(uploadParams);
+        var result = await _cloudinary.UploadAsync(uploadParams);
+        
+        if (result.Error != null)
+            throw new InvalidOperationException(result.Error.Message);
+
+        return new ImageUploadResponse
+        {
+            PublicId = result.PublicId,
+            Url = result.SecureUrl.AbsoluteUri
+        };
     }
 
     public async Task DeleteAsync(string publicId)
