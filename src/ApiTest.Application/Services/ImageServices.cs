@@ -36,13 +36,29 @@ public class ImageServices : IImageServices
         throw new NotImplementedException();
     }
 
-    public Task<ImageUploadResponse> DeleteImageAsync(string publicId)
+    public async Task<ImageUploadResponse> DeleteImageAsync(string publicId)
     {
-        throw new NotImplementedException();
+        var image = await _imageRepository.GetByPublicIdAsync(publicId);
+        
+        await _imageRepository.RemoveAsync(image!);
+        await _cloudinaryService.DeleteAsync(publicId);
+
+        return new ImageUploadResponse
+        {
+            PublicId = publicId,
+            Url = "Remove"
+        };
     }
 
-    public Task<IEnumerable<ImageDto>> GetAllImagesAsync()
+    public async Task<IReadOnlyList<ImageDto>> GetAllImagesAsync()
     {
-        throw new NotImplementedException();
+        var images = await _imageRepository.GetAllAsync();
+        
+        return images
+            .Select(image => new ImageDto(
+                image.Url,
+                image.PublicId
+            ))
+            .ToList();
     }
 }

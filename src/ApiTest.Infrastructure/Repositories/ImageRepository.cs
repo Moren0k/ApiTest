@@ -34,7 +34,7 @@ public class ImageRepository : IImageRepository
     }
 
     // SEARCH
-    public async Task<IEnumerable<Image>> GetAllAsync()
+    public async Task<IReadOnlyList<Image>> GetAllAsync()
     {
         return await _dbContext.Images.ToListAsync();
     }

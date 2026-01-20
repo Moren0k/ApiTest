@@ -1,5 +1,5 @@
+using ApiTest.Api.Dtos;
 using ApiTest.Application.IServices;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTest.Api.Controllers;
@@ -17,24 +17,38 @@ public sealed class ImageController : ControllerBase
 
     [HttpPost("upload")]
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> Upload([FromForm] IFormFile file)
+    public async Task<IActionResult> Upload([FromForm] ImageUploadRequest request)
     {
-        if (file is null || file.Length == 0)
+        if (request.File is null || request.File.Length == 0)
             return BadRequest("Archivo inválido");
 
         var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
-        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        var extension = Path.GetExtension(request.File.FileName).ToLowerInvariant();
 
         if (!allowedExtensions.Contains(extension))
             return BadRequest("Formato no permitido");
 
-        await using var stream = file.OpenReadStream();
-        
-        var response = await _imageServices.UploadImageAsync(stream, file.FileName);
-        
-        return Ok(new {
-            response.PublicId,
-            response.Url
-        });
+        await using var stream = request.File.OpenReadStream();
+
+        var response = await _imageServices.UploadImageAsync(stream, request.File.FileName);
+
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var images = await _imageServices.GetAllImagesAsync();
+        return Ok(images);
+    }
+
+    [HttpDelete("{publicId}")]
+    public async Task<IActionResult> Delete(string publicId)
+    {
+        if (string.IsNullOrWhiteSpace(publicId))
+            return BadRequest("PublicId inválido");
+
+        var response = await _imageServices.DeleteImageAsync(publicId);
+        return Ok(response);
     }
 }

@@ -1,6 +1,6 @@
 namespace ApiTest.Api.Dtos;
 
-public class ImageUploadRequest
+public sealed class ImageUploadRequest
 {
-    
+    public IFormFile File { get; init; } = default!;
 }

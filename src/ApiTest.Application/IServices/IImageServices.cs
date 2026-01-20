@@ -10,5 +10,5 @@ public interface IImageServices
     public Task<ImageUploadResponse> DeleteImageAsync(string publicId);
     
     // SEARCH
-    public Task<IEnumerable<ImageDto>> GetAllImagesAsync();
+    public Task<IReadOnlyList<ImageDto>> GetAllImagesAsync();
 }
