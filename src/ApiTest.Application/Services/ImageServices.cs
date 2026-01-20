@@ -2,7 +2,6 @@ using ApiTest.Application.DTOs;
 using ApiTest.Application.IServices;
 using ApiTest.Domain.Entities;
 using ApiTest.Domain.IRepository;
-using CloudinaryDotNet.Actions;
 
 namespace ApiTest.Application.Services;
 
@@ -17,7 +16,7 @@ public class ImageServices : IImageServices
         _imageRepository = imageRepository;
     }
     
-    public async Task<ImageUploadResult> UploadImageAsync(Stream file, string fileName)
+    public async Task<ImageUploadResponse> UploadImageAsync(Stream file, string fileName)
     {
         var result = await _cloudinaryService.UploadAsync(file, fileName);
 
@@ -25,15 +24,19 @@ public class ImageServices : IImageServices
         
         await _imageRepository.AddAsync(newImg);
         
-        return result;
+        return new ImageUploadResponse
+        {
+            PublicId = result.PublicId,
+            Url = result.SecureUrl.AbsoluteUri
+        };
     }
 
-    public Task<ImageUploadResult> UpdateImageAsync(Stream file, string fileName)
+    public Task<ImageUploadResponse> UpdateImageAsync(Stream file, string fileName)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ImageUploadResult> DeleteImageAsync(string publicId)
+    public Task<ImageUploadResponse> DeleteImageAsync(string publicId)
     {
         throw new NotImplementedException();
     }

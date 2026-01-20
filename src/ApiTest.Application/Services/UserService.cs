@@ -1,6 +1,5 @@
 using ApiTest.Application.DTOs;
 using ApiTest.Application.IServices;
-using ApiTest.Domain.Entities;
 using ApiTest.Domain.Enums;
 using ApiTest.Domain.IRepository;
 
