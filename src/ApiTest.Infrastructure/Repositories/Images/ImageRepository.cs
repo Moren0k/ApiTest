@@ -12,7 +12,7 @@ public class ImageRepository : IImageRepository
     {
         _dbContext = dbContext;
     }
-    
+
     // WRITE
     public void Add(Image image)
     {

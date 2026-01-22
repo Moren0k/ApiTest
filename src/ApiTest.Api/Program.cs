@@ -4,6 +4,7 @@ using ApiTest.Application.IServices;
 using ApiTest.Application.Services;
 using ApiTest.Domain.Entities.Image;
 using ApiTest.Domain.Entities.User;
+using ApiTest.Infrastructure.Health;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ApiTest.Infrastructure.Persistence;

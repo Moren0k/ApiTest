@@ -1,29 +1,29 @@
-using ApiTest.Infrastructure.Security;
+using ApiTest.Infrastructure.Health;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTest.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class HealthController : ControllerBase
+[Route("health")]
+public sealed class HealthController : ControllerBase
 {
-    private readonly DatabaseHealthChecker _dbHealthChecker;
+    private readonly IDatabaseHealth _dbHealth;
 
-    public HealthController(DatabaseHealthChecker dbHealthChecker)
+    public HealthController(IDatabaseHealth dbHealth)
     {
-        _dbHealthChecker = dbHealthChecker;
+        _dbHealth = dbHealth;
     }
 
     [HttpGet("db")]
     public async Task<IActionResult> CheckDatabase()
     {
-        var canConnect = await _dbHealthChecker.CanConnectAsync();
+        var result = await _dbHealth.HealthAsync();
 
-        if (!canConnect)
+        if (!result.IsHealthy)
         {
-            return StatusCode(503, new {status = "unhealthy", dependency = "MySQL"});
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, result);
         }
-        
-        return Ok(new {status = "healthy", dependency = "MySQL"});
+
+        return Ok(result);
     }
 }

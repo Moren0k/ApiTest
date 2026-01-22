@@ -1,4 +1,3 @@
-using ApiTest.Domain.Entities;
 using ApiTest.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -16,6 +15,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(user => user.Name)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.HasIndex(user => user.Name);
 
         builder.Property(user => user.Email)
             .IsRequired()

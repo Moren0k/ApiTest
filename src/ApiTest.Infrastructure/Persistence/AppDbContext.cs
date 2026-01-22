@@ -1,4 +1,3 @@
-using ApiTest.Domain.Entities;
 using ApiTest.Domain.Entities.Image;
 using ApiTest.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
