@@ -1,4 +1,4 @@
-namespace ApiTest.Domain.Common;
+namespace ApiTest.Domain.Entities.Common;
 
 public abstract class BaseEntity
 {

@@ -2,7 +2,7 @@ using ApiTest.Application.DTOs;
 using ApiTest.Application.ISecurity;
 using ApiTest.Application.IServices;
 using ApiTest.Domain.Entities;
-using ApiTest.Domain.IRepository;
+using ApiTest.Domain.Entities.User;
 
 namespace ApiTest.Application.Services;
 

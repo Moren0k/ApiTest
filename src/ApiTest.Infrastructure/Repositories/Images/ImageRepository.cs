@@ -1,9 +1,8 @@
-using ApiTest.Domain.Entities;
-using ApiTest.Domain.IRepository;
+using ApiTest.Domain.Entities.Image;
 using ApiTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiTest.Infrastructure.Repositories;
+namespace ApiTest.Infrastructure.Repositories.Images;
 
 public class ImageRepository : IImageRepository
 {
@@ -14,43 +13,40 @@ public class ImageRepository : IImageRepository
         _dbContext = dbContext;
     }
     
-    // CRUD
-    public async Task AddAsync(Image image)
+    // WRITE
+    public void Add(Image image)
     {
         _dbContext.Images.Add(image);
-        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Image image)
+    public void Update(Image image)
     {
         _dbContext.Images.Update(image);
-        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task RemoveAsync(Image image)
+    public void Remove(Image image)
     {
         _dbContext.Images.Remove(image);
-        await _dbContext.SaveChangesAsync();
     }
 
-    // SEARCH
+    // READ
     public async Task<IReadOnlyList<Image>> GetAllAsync()
     {
-        return await _dbContext.Images.ToListAsync();
+        return await _dbContext.Images.AsNoTracking().ToListAsync();
     }
 
     public async Task<Image?> GetByIdAsync(Guid id)
     {
-        return await _dbContext.Images.FindAsync(id);
+        return await _dbContext.Images.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
     }
 
     public async Task<Image?> GetByPublicIdAsync(string publicId)
     {
-        return await _dbContext.Images.FirstOrDefaultAsync(i => i.PublicId == publicId);
+        return await _dbContext.Images.AsNoTracking().FirstOrDefaultAsync(i => i.PublicId == publicId);
     }
 
     public async Task<Image?> GetByUrlAsync(string url)
     {
-        return await _dbContext.Images.FirstOrDefaultAsync(i => i.Url == url);
+        return await _dbContext.Images.AsNoTracking().FirstOrDefaultAsync(i => i.Url == url);
     }
 }

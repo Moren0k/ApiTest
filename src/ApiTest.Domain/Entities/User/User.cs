@@ -1,8 +1,6 @@
-using System.ComponentModel;
-using ApiTest.Domain.Common;
-using ApiTest.Domain.Enums;
+using ApiTest.Domain.Entities.Common;
 
-namespace ApiTest.Domain.Entities;
+namespace ApiTest.Domain.Entities.User;
 
 public class User : BaseEntity
 {
@@ -10,16 +8,16 @@ public class User : BaseEntity
     public string Email { get; private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
     public UserRole Role { get; private set; }
-    
+
     // Foto de Perfil (1 a 1)
     public Guid? ProfileImageId { get; private set; }
-    public virtual Image? ProfileImage { get; private set; }
-    
-    // Galería de Fotos (1 a N)
-    private readonly List<Image> _gallery = new();
-    public virtual IReadOnlyCollection<Image> Gallery => _gallery.AsReadOnly();
+    public Image.Image? ProfileImage { get; private set; }
 
-    protected User()
+    // Galería de Fotos (1 a N)
+    private readonly List<Image.Image> _gallery = [];
+    public IReadOnlyCollection<Image.Image> Gallery => _gallery.AsReadOnly();
+
+    private User()
     {
         // Required by EF Core
     }
@@ -112,7 +110,7 @@ public class User : BaseEntity
     {
         if (!Enum.IsDefined(typeof(UserRole), role) || role == UserRole.None)
         {
-            throw new InvalidEnumArgumentException(nameof(role), (int)role, typeof(UserRole));
+            throw new ArgumentException("The provided role is invalid.", nameof(role));
         }
 
         if (Role == role)
@@ -120,19 +118,19 @@ public class User : BaseEntity
 
         Role = role;
     }
-    
-    public void SetProfileImage(Image image)
+
+    public void SetProfileImage(Image.Image image)
     {
         ProfileImage = image ?? throw new ArgumentNullException(nameof(image));
         ProfileImageId = image.Id;
     }
-    
-    public void AddImageToGallery(Image image)
+
+    public void AddImageToGallery(Image.Image image)
     {
         if (image == null) throw new ArgumentNullException(nameof(image));
-        
+
         if (_gallery.Count >= 3)
-            throw new InvalidOperationException("Gallery cannot have more than 10 images.");
+            throw new InvalidOperationException("Gallery cannot have more than 3 images.");
 
         _gallery.Add(image);
     }

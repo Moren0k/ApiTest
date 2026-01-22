@@ -1,7 +1,7 @@
 using ApiTest.Application.DTOs;
 using ApiTest.Application.IServices;
 using ApiTest.Domain.Entities;
-using ApiTest.Domain.IRepository;
+using ApiTest.Domain.Entities.Image;
 
 namespace ApiTest.Application.Services;
 

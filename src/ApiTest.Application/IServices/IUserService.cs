@@ -1,6 +1,6 @@
 using ApiTest.Application.DTOs;
 using ApiTest.Domain.Entities;
-using ApiTest.Domain.Enums;
+using ApiTest.Domain.Entities.User;
 
 namespace ApiTest.Application.IServices;
 

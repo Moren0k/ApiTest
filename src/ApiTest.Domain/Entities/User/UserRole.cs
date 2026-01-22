@@ -1,4 +1,4 @@
-namespace ApiTest.Domain.Enums;
+namespace ApiTest.Domain.Entities.User;
 
 public enum UserRole
 {

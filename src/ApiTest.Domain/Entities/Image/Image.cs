@@ -1,32 +1,32 @@
-using ApiTest.Domain.Common;
+using ApiTest.Domain.Entities.Common;
 
-namespace ApiTest.Domain.Entities;
+namespace ApiTest.Domain.Entities.Image;
 
 public class Image : BaseEntity
 {
     public string PublicId { get; private set; } = null!;
     public string Url { get; private set; } = null!;
-    
+
     protected Image()
     {
         // Required by EF Core
     }
-    
+
     public Image(string publicId, string url)
     {
         SetPublicId(publicId);
         SetUrl(url);
     }
-    
-    public void SetPublicId(string publicId)
+
+    private void SetPublicId(string publicId)
     {
         if (string.IsNullOrWhiteSpace(publicId))
             throw new ArgumentException("PublicId cannot be empty.", nameof(publicId));
 
         PublicId = publicId.Trim();
     }
-    
-    public void SetUrl(string url)
+
+    private void SetUrl(string url)
     {
         if (string.IsNullOrWhiteSpace(url))
             throw new ArgumentException("Url cannot be empty.", nameof(url));
@@ -35,10 +35,11 @@ public class Image : BaseEntity
 
         if (!Uri.TryCreate(sanitizedUrl, UriKind.Absolute, out _))
             throw new ArgumentException($"The string '{sanitizedUrl}' is not a valid absolute URL.", nameof(url));
-        
+
         var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-        
-        var hasImageExtension = allowedExtensions.Any(ext => sanitizedUrl.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
+
+        var hasImageExtension =
+            allowedExtensions.Any(ext => sanitizedUrl.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
 
         if (!hasImageExtension)
         {

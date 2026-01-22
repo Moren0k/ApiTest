@@ -1,4 +1,4 @@
-using ApiTest.Domain.Enums;
+using ApiTest.Domain.Entities.User;
 
 namespace ApiTest.Application.DTOs;
 
