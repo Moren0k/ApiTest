@@ -4,7 +4,7 @@ using ApiTest.Application.IServices;
 using ApiTest.Application.Services;
 using ApiTest.Domain.Entities.Image;
 using ApiTest.Domain.Entities.User;
-using ApiTest.Infrastructure.Health;
+using ApiTest.Infrastructure.HealthChecks;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ApiTest.Infrastructure.Persistence;
@@ -12,6 +12,7 @@ using ApiTest.Infrastructure.Repositories;
 using ApiTest.Infrastructure.Repositories.Images;
 using ApiTest.Infrastructure.Repositories.Users;
 using ApiTest.Infrastructure.Security;
+using ApiTest.Infrastructure.Security.JWT;
 using ApiTest.Infrastructure.Services;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,7 +51,7 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 // =============================================================
 // DEPENDENCY INJECTION: SERVICES
 // =============================================================
-builder.Services.AddScoped<DatabaseHealthChecker>();
+builder.Services.AddScoped<ICheckDatabase, CheckDatabase>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
@@ -105,12 +106,14 @@ builder.Services.AddSwaggerGen(options =>
 // =============================================================
 // JWT/SECURITY
 // =============================================================
-var jwt = builder.Configuration.GetSection("Jwt");
-var secretKey = Environment.GetEnvironmentVariable("JWT_KEY");
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        var secretKey = Environment.GetEnvironmentVariable("JWT_KEY") ??
+                        throw new InvalidOperationException("JWT_KEY not configured");
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -118,16 +121,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
-            ValidIssuer = jwt["Issuer"],
-            ValidAudience = jwt["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(secretKey!)
-            ),
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
             ClockSkew = TimeSpan.Zero
         };
     });
 
 builder.Services.AddAuthorization();
+
+// =============================================================
+// CLOUDINARY
+// =============================================================
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
+
+builder.Services.PostConfigure<CloudinarySettings>(settings =>
+{
+    if (string.IsNullOrWhiteSpace(settings.CloudName))
+        throw new InvalidOperationException("Cloudinary CloudName not configured");
+
+    if (string.IsNullOrWhiteSpace(settings.ApiKey))
+        throw new InvalidOperationException("Cloudinary ApiKey not configured");
+
+    if (string.IsNullOrWhiteSpace(settings.ApiSecret))
+        throw new InvalidOperationException("Cloudinary ApiSecret not configured");
+});
 
 // =============================================================
 // CORS
@@ -142,24 +160,6 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
-});
-
-// =============================================================
-// CLOUDINARY
-// =============================================================
-builder.Services.Configure<CloudinarySettings>(
-    builder.Configuration.GetSection("Cloudinary"));
-
-builder.Services.PostConfigure<CloudinarySettings>(settings =>
-{
-    if (string.IsNullOrWhiteSpace(settings.CloudName))
-        throw new InvalidOperationException("Cloudinary CloudName not configured");
-
-    if (string.IsNullOrWhiteSpace(settings.ApiKey))
-        throw new InvalidOperationException("Cloudinary ApiKey not configured");
-
-    if (string.IsNullOrWhiteSpace(settings.ApiSecret))
-        throw new InvalidOperationException("Cloudinary ApiSecret not configured");
 });
 
 // =============================================================
@@ -198,7 +198,6 @@ using (var scope = app.Services.CreateScope())
 // =============================================================
 if (app.Environment.IsDevelopment())
 {
-    
 }
 
 app.UseSwagger();

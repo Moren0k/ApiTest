@@ -1,8 +1,8 @@
-using ApiTest.Application.DTOs;
+using ApiTest.Domain.Entities.User;
 
 namespace ApiTest.Application.ISecurity;
 
 public interface IJwtTokenGenerator
 {
-    string Generate(UserDto user);
+    string Generate(User user);
 }

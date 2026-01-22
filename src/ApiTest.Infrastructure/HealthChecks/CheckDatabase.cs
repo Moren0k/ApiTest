@@ -1,36 +1,35 @@
 using ApiTest.Infrastructure.Persistence;
 
-namespace ApiTest.Infrastructure.Health;
+namespace ApiTest.Infrastructure.HealthChecks;
 
-public interface IDatabaseHealth
+public interface ICheckDatabase
 {
-    Task<HealthResult> HealthAsync();
+    Task<CheckResult> Check();
 }
 
-public sealed record HealthResult(
+public sealed record CheckResult(
     bool IsHealthy,
     string Dependency,
     string? Provider = null,
     string? Message = null
 );
 
-public sealed class DatabaseHealth : IDatabaseHealth
+public sealed class CheckDatabase : ICheckDatabase
 {
     private readonly AppDbContext _dbContext;
 
-    public DatabaseHealth(AppDbContext dbContext)
+    public CheckDatabase(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task<HealthResult> HealthAsync()
+    public async Task<CheckResult> Check()
     {
         try
         {
-            var canConnect = await _dbContext.Database
-                .CanConnectAsync();
+            var canConnect = await _dbContext.Database.CanConnectAsync();
 
-            return new HealthResult(
+            return new CheckResult(
                 IsHealthy: canConnect,
                 Dependency: "Database",
                 Provider: _dbContext.Database.ProviderName,
@@ -39,7 +38,7 @@ public sealed class DatabaseHealth : IDatabaseHealth
         }
         catch (Exception ex)
         {
-            return new HealthResult(
+            return new CheckResult(
                 IsHealthy: false,
                 Dependency: "Database",
                 Provider: _dbContext.Database.ProviderName,
