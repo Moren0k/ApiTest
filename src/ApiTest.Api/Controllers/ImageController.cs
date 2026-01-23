@@ -1,5 +1,5 @@
 using ApiTest.Api.Dtos;
-using ApiTest.Application.IServices;
+using ApiTest.Application.Features.ImageFeatures;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTest.Api.Controllers;

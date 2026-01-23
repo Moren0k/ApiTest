@@ -1,5 +1,5 @@
-using ApiTest.Application.DTOs;
-using ApiTest.Application.IServices;
+using ApiTest.Application.Features.AuthFeatures;
+using ApiTest.Application.Features.AuthFeatures.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTest.Api.Controllers;

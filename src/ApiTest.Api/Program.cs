@@ -1,64 +1,43 @@
 using System.Text;
-using ApiTest.Application.ISecurity;
-using ApiTest.Application.IServices;
-using ApiTest.Application.Services;
-using ApiTest.Domain.Entities.Image;
-using ApiTest.Domain.Entities.User;
-using ApiTest.Infrastructure.HealthChecks;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ApiTest.Infrastructure.Persistence;
-using ApiTest.Infrastructure.Repositories;
-using ApiTest.Infrastructure.Repositories.Images;
-using ApiTest.Infrastructure.Repositories.Users;
-using ApiTest.Infrastructure.Security;
-using ApiTest.Infrastructure.Security.JWT;
-using ApiTest.Infrastructure.Services;
-using CloudinaryDotNet;
+using ApiTest.Infrastructure.Providers.ExternalServices.Cloudinary;
+using ApiTest.Infrastructure.Providers.Security.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// =============================================================
-// CONFIG: DATABASE
-// =============================================================
 
 if (builder.Environment.IsDevelopment())
 {
     Env.Load("../../.env"); // LOAD .env ONLY IN DEVELOPMENT
 }
 
-var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
-var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-var dbUser = Environment.GetEnvironmentVariable("DB_USER");
-var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
-var connectionString =
-    $"Server={dbHost};Port={dbPort};Database={dbName};User={dbUser};Password={dbPassword};";
+// =============================================================
+// CONFIG: DATABASE
+// =============================================================
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
+    var dbHost = Environment.GetEnvironmentVariable("Db__Host");
+    var dbPort = Environment.GetEnvironmentVariable("Dd__Port");
+    var dbName = Environment.GetEnvironmentVariable("Dd__Name");
+    var dbUser = Environment.GetEnvironmentVariable("Dd__User");
+    var dbPassword = Environment.GetEnvironmentVariable("Dd__Password");
+    var connectionString =
+        $"Server={dbHost};Port={dbPort};Database={dbName};User={dbUser};Password={dbPassword};";
+    
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0)));
 });
 
 // =============================================================
 // DEPENDENCY INJECTION: REPOSITORIES
 // =============================================================
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
 // =============================================================
 // DEPENDENCY INJECTION: SERVICES
 // =============================================================
-builder.Services.AddScoped<ICheckDatabase, CheckDatabase>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
-
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IImageServices, ImageServices>();
 
 // =============================================================
 // CONTROLLERS
@@ -69,39 +48,7 @@ builder.Services.AddControllers();
 // SWAGGER/OPENAPI
 // =============================================================
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new()
-    {
-        Title = "ApiTest API",
-        Version = "v5"
-    });
-
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Ingrese el token JWT así: Bearer {token}"
-    });
-
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
-        {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
+builder.Services.AddSwaggerGen();
 
 // =============================================================
 // JWT/SECURITY
@@ -111,7 +58,7 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSett
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var secretKey = Environment.GetEnvironmentVariable("JWT_KEY") ??
+        var secretKey = Environment.GetEnvironmentVariable("Jwt__Key") ??
                         throw new InvalidOperationException("JWT_KEY not configured");
 
         options.TokenValidationParameters = new TokenValidationParameters
@@ -133,7 +80,7 @@ builder.Services.AddAuthorization();
 // =============================================================
 // CLOUDINARY
 // =============================================================
-builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(CloudinarySettings.SectionName));
 
 builder.Services.PostConfigure<CloudinarySettings>(settings =>
 {
@@ -196,10 +143,6 @@ using (var scope = app.Services.CreateScope())
 // =============================================================
 // MIDDLEWARE PIPELINE
 // =============================================================
-if (app.Environment.IsDevelopment())
-{
-}
-
 app.UseSwagger();
 app.UseSwaggerUI();
 

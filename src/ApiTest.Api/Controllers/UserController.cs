@@ -1,5 +1,5 @@
-using ApiTest.Application.DTOs;
-using ApiTest.Application.IServices;
+using ApiTest.Application.Features.UserFeatures;
+using ApiTest.Application.Features.UserFeatures.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

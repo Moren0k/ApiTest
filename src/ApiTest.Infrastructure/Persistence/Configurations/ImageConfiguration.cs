@@ -1,4 +1,4 @@
-using ApiTest.Domain.Entities.Image;
+using ApiTest.Domain.Entities.EImage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

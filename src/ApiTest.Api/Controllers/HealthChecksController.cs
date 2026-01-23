@@ -1,4 +1,4 @@
-using ApiTest.Infrastructure.HealthChecks;
+using ApiTest.Infrastructure.Providers.HealthChecks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

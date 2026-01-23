@@ -1,4 +1,4 @@
-using ApiTest.Domain.Entities.User;
+using ApiTest.Domain.Entities.EUser;
 using ApiTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

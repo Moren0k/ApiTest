@@ -1,5 +1,5 @@
-using ApiTest.Domain.Entities.Image;
-using ApiTest.Domain.Entities.User;
+using ApiTest.Domain.Entities.EImage;
+using ApiTest.Domain.Entities.EUser;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiTest.Infrastructure.Persistence;

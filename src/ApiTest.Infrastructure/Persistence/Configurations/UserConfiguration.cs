@@ -1,4 +1,4 @@
-using ApiTest.Domain.Entities.User;
+using ApiTest.Domain.Entities.EUser;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

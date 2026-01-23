@@ -1,4 +1,4 @@
-using ApiTest.Domain.Entities.Image;
+using ApiTest.Domain.Entities.EImage;
 using ApiTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
