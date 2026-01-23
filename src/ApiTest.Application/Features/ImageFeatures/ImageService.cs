@@ -1,27 +1,31 @@
 using ApiTest.Application.Features.ImageFeatures.DTOs;
 using ApiTest.Application.IProviders.IExternalServices.ICloudinary;
+using ApiTest.Domain.Entities.Common;
 using ApiTest.Domain.Entities.EImage;
 
 namespace ApiTest.Application.Features.ImageFeatures;
 
-public class ImageServices : IImageServices
+public class ImageService : IImageService
 {
     private readonly IImageRepository _imageRepository;
     private readonly ICloudinaryProvider _cloudinaryProvider;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public ImageServices(ICloudinaryProvider cloudinaryProvider, IImageRepository imageRepository)
+    public ImageService(ICloudinaryProvider cloudinaryProvider, IImageRepository imageRepository, IUnitOfWork unitOfWork)
     {
         _cloudinaryProvider = cloudinaryProvider;
         _imageRepository = imageRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<ImageUploadResponse> UploadImageAsync(Stream file, string fileName)
     {
         var result = await _cloudinaryProvider.UploadAsync(file, fileName);
 
-        var newImg = new Domain.Entities.EImage.Image(result.PublicId, result.Url.ToString());
+        var newImg = new Image(result.PublicId, result.Url);
         
         _imageRepository.Add(newImg);
+        await _unitOfWork.SaveChangesAsync();
         
         return new ImageUploadResponse
         {

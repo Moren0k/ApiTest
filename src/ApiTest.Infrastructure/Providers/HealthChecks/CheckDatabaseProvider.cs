@@ -2,7 +2,7 @@ using ApiTest.Infrastructure.Persistence;
 
 namespace ApiTest.Infrastructure.Providers.HealthChecks;
 
-public interface ICheckDatabase
+public interface ICheckDatabaseProvider
 {
     Task<CheckResult> Check();
 }
@@ -14,11 +14,11 @@ public sealed record CheckResult(
     string? Message = null
 );
 
-public sealed class CheckDatabase : ICheckDatabase
+public sealed class CheckDatabaseProvider : ICheckDatabaseProvider
 {
     private readonly AppDbContext _dbContext;
 
-    public CheckDatabase(AppDbContext dbContext)
+    public CheckDatabaseProvider(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }

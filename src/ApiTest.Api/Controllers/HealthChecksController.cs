@@ -8,9 +8,9 @@ namespace ApiTest.Api.Controllers;
 [Route("checks")]
 public sealed class HealthChecksController : ControllerBase
 {
-    private readonly ICheckDatabase _checkDatabase;
+    private readonly ICheckDatabaseProvider _checkDatabase;
 
-    public HealthChecksController(ICheckDatabase checkDatabase)
+    public HealthChecksController(ICheckDatabaseProvider checkDatabase)
     {
         _checkDatabase = checkDatabase;
     }

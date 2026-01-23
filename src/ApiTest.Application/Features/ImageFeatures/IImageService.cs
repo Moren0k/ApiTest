@@ -2,7 +2,7 @@ using ApiTest.Application.Features.ImageFeatures.DTOs;
 
 namespace ApiTest.Application.Features.ImageFeatures;
 
-public interface IImageServices
+public interface IImageService
 {
     // CRUD
     public Task<ImageUploadResponse> UploadImageAsync(Stream file, string fileName);

@@ -1,4 +1,5 @@
 using ApiTest.Application.Features.UserFeatures.DTOs;
+using ApiTest.Domain.Entities.EUser;
 
 namespace ApiTest.Application.Features.AuthFeatures.DTOs;
 
@@ -11,7 +12,7 @@ public record RegisterRequestDto(
     string Name,
     string Email,
     string Password,
-    bool IsAdmin
+    UserRole Role
 );
 
 public record AuthResponseDto(

@@ -19,8 +19,8 @@ public class JwtProvider : IJwtProvider
 
     public string Generate(User user)
     {
-        var secretKey = Environment.GetEnvironmentVariable("JWT_KEY") ??
-                        throw new InvalidOperationException("JWT_KEY not configured");
+        var secretKey = Environment.GetEnvironmentVariable("Jwt__Key") ??
+                        throw new InvalidOperationException("Jwt_Key not configured");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

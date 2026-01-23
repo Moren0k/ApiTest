@@ -1,9 +1,22 @@
 using System.Text;
+using ApiTest.Application.Features.AuthFeatures;
+using ApiTest.Application.Features.ImageFeatures;
+using ApiTest.Application.Features.UserFeatures;
+using ApiTest.Application.IProviders.IExternalServices.ICloudinary;
+using ApiTest.Application.IProviders.ISecurity;
+using ApiTest.Domain.Entities.Common;
+using ApiTest.Domain.Entities.EImage;
+using ApiTest.Domain.Entities.EUser;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ApiTest.Infrastructure.Persistence;
 using ApiTest.Infrastructure.Providers.ExternalServices.Cloudinary;
+using ApiTest.Infrastructure.Providers.HealthChecks;
 using ApiTest.Infrastructure.Providers.Security.Jwt;
+using ApiTest.Infrastructure.Providers.Security.Password;
+using ApiTest.Infrastructure.Repositories.Common;
+using ApiTest.Infrastructure.Repositories.Images;
+using ApiTest.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -34,10 +47,24 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // =============================================================
 // DEPENDENCY INJECTION: REPOSITORIES
 // =============================================================
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+
+// =============================================================
+// DEPENDENCY INJECTION: PROVIDERS
+// =============================================================
+builder.Services.AddScoped<ICheckDatabaseProvider, CheckDatabaseProvider>();
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<ICloudinaryProvider, CloudinaryProvider>();
+builder.Services.AddScoped<IPasswordHasherProvider, PasswordHasherProvider>();
 
 // =============================================================
 // DEPENDENCY INJECTION: SERVICES
 // =============================================================
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 // =============================================================
 // CONTROLLERS

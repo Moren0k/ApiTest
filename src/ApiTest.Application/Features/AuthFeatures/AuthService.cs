@@ -1,6 +1,7 @@
 using ApiTest.Application.Features.AuthFeatures.DTOs;
 using ApiTest.Application.Features.UserFeatures.DTOs;
 using ApiTest.Application.IProviders.ISecurity;
+using ApiTest.Domain.Entities.Common;
 using ApiTest.Domain.Entities.EUser;
 
 namespace ApiTest.Application.Features.AuthFeatures;
@@ -10,15 +11,18 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IJwtProvider _jwtProvider;
     private readonly IPasswordHasherProvider _passwordHasherProvider;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AuthService(
         IUserRepository userRepository,
         IJwtProvider jwtProvider,
-        IPasswordHasherProvider passwordHasherProvider)
+        IPasswordHasherProvider passwordHasherProvider,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _jwtProvider = jwtProvider;
         _passwordHasherProvider = passwordHasherProvider;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<AuthResponseDto?> LoginAsync(LoginRequestDto loginRequest)
@@ -59,10 +63,11 @@ public class AuthService : IAuthService
             registerRequest.Name,
             registerRequest.Email,
             passwordHash,
-            UserRole.None
+            registerRequest.Role
         );
         
         _userRepository.Add(newUser);
+        await _unitOfWork.SaveChangesAsync();
         
         var userDto = new UserDto(
             newUser.Id,

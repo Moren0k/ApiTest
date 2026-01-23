@@ -8,11 +8,11 @@ namespace ApiTest.Api.Controllers;
 [Route("api/images")]
 public sealed class ImageController : ControllerBase
 {
-    private readonly IImageServices _imageServices;
+    private readonly IImageService _imageService;
 
-    public ImageController(IImageServices imageServices)
+    public ImageController(IImageService imageService)
     {
-        _imageServices = imageServices;
+        _imageService = imageService;
     }
 
     [HttpPost("upload")]
@@ -30,7 +30,7 @@ public sealed class ImageController : ControllerBase
 
         await using var stream = request.File.OpenReadStream();
 
-        var response = await _imageServices.UploadImageAsync(stream, request.File.FileName);
+        var response = await _imageService.UploadImageAsync(stream, request.File.FileName);
 
         return Ok(response);
     }
@@ -38,7 +38,7 @@ public sealed class ImageController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var images = await _imageServices.GetAllImagesAsync();
+        var images = await _imageService.GetAllImagesAsync();
         return Ok(images);
     }
 
@@ -48,7 +48,7 @@ public sealed class ImageController : ControllerBase
         if (string.IsNullOrWhiteSpace(publicId))
             return BadRequest("PublicId inválido");
 
-        var response = await _imageServices.DeleteImageAsync(publicId);
+        var response = await _imageService.DeleteImageAsync(publicId);
         return Ok(response);
     }
 }
